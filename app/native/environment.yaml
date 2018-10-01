@@ -1,0 +1,11 @@
+name: qt
+channels:
+  - defaults
+dependencies:
+  - pip
+  - lxml
+  - pyyaml
+  - jinja2
+  - pylint
+  - cython
+  - pyqt

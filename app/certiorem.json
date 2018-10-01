@@ -1,0 +1,9 @@
+{
+    "name": "certiorem",
+    "description": "Notify (for Micrsoft Teams)",
+    "path": "/home/andrew/Projects/GitHub/certiorem/app/native/notify.py",
+    "type": "stdio",
+    "allowed_extensions": [
+        "certiorem@webextensions.fernandes.org"
+    ]
+  }

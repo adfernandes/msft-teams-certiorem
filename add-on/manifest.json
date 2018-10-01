@@ -1,0 +1,47 @@
+{
+
+    "manifest_version": 2,
+
+    "name": "Certiorem",
+    "description": "Notify (for Micrsoft Teams)",
+    "homepage_url": "https://github.com/adfernandes/certiorem",
+    "version": "1.0",
+
+    "applications": {
+        "gecko": {
+            "id": "certiorem@webextensions.fernandes.org"
+        }
+    },
+
+    "icons": {
+        "16": "icons/an-d-rew-16.png",
+        "24": "icons/an-d-rew-24.png",
+        "32": "icons/an-d-rew-32.png",
+        "48": "icons/an-d-rew-48.png",
+        "64": "icons/an-d-rew-64.png"
+    },
+
+    "permissions": [
+        "nativeMessaging"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": [
+                "*://teams.microsoft.com/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+
+    "default_locale": "en"
+
+}
