@@ -44,15 +44,17 @@ class ImagePlayer(QWidget):
 
 if __name__ == "__main__":
 
-    image = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise.gif")
+    icon =  os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise~48.png")
+    movie = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise.gif")
 
-    app = QApplication([])
+    app = QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(icon))
 
     desktop = app.desktop()
 
     screenCount = desktop.screenCount()
     screens = [desktop.availableGeometry(i) for i in range(screenCount)]
-    widgets = [ImagePlayer(image, desktop.screen(i)) for i in range(screenCount)]
+    widgets = [ImagePlayer(movie, desktop.screen(i)) for i in range(screenCount)]
 
     for i in range(screenCount):
 
