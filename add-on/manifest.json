@@ -5,7 +5,7 @@
     "name": "Certiorem",
     "description": "Notify (for Micrsoft Teams)",
     "homepage_url": "https://github.com/adfernandes/msft-teams-certiorem",
-    "version": "1.0",
+    "version": "1.1",
 
     "applications": {
         "gecko": {
