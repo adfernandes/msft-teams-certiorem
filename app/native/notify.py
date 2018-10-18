@@ -1,6 +1,6 @@
 #!/opt/conda/envs/qt/bin/python3
 
-import os, sys
+import os, sys, fcntl
 
 if os.fork() != 0:
     sys.exit()
@@ -42,29 +42,39 @@ class ImagePlayer(QWidget):
         sys.exit()
 
 
+
 if __name__ == "__main__":
 
-    icon =  os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise~48.png")
-    movie = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise.gif")
+    lockfile = "/run/lock/.notify"
 
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(icon))
+    with open(lockfile, 'w') as lock:
 
-    desktop = app.desktop()
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            sys.exit()
 
-    screenCount = desktop.screenCount()
-    screens = [desktop.availableGeometry(i) for i in range(screenCount)]
-    widgets = [ImagePlayer(movie, desktop.screen(i)) for i in range(screenCount)]
+        icon =  os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise~48.png")
+        movie = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pennywise.gif")
 
-    for i in range(screenCount):
+        app = QApplication(sys.argv)
+        app.setWindowIcon(QtGui.QIcon(icon))
 
-        screen = screens[i]
-        widget = widgets[i]
+        desktop = app.desktop()
 
-        x = screen.x() + screen.width() - widget.width()
-        y = screen.y() + screen.height() - widget.height();
+        screenCount = desktop.screenCount()
+        screens = [desktop.availableGeometry(i) for i in range(screenCount)]
+        widgets = [ImagePlayer(movie, desktop.screen(i)) for i in range(screenCount)]
 
-        widget.move(x, y)
-        widget.show()
+        for i in range(screenCount):
 
-    sys.exit(app.exec_())
+            screen = screens[i]
+            widget = widgets[i]
+
+            x = screen.x()   + screen.width() - widget.width()
+            y = screen.y() # + screen.height() - widget.height();
+
+            widget.move(x, y)
+            widget.show()
+
+        sys.exit(app.exec_())
