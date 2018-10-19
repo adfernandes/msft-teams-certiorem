@@ -22,9 +22,9 @@ var certiorem = certiorem || (function() {
 
     var tag = v4uuid();
 
-    var title_then = clone_string(window.document.title);
+    var last_unread_count = 0;
 
-    var title_re = /^\((\d+)\)/; // titles must match to start notifications
+    var title_re = /^\((\d+)\)/; // the titlebar 'number of unread notifications'
 
     var check_interval = null; // identifier for the document-title-check interval
 
@@ -36,23 +36,20 @@ var certiorem = certiorem || (function() {
 
         check_document_title: function() {
 
-            var title_now = clone_string(window.document.title);
+            var title = clone_string(window.document.title);
+            var unread_match = title.match(title_re);
 
-            var title_unchanged = (title_now === title_then);
-            var no_unread_messages = !(title_re.test(title_now));
+            var unread_count = 0;
+            if (unread_match) unread_count = parseInt(unread_match[1])
 
-            if (no_unread_messages) {
-                title_then = title_now;
-                return;
-            }
+            var unread_messages = unread_count > last_unread_count;
+            last_unread_count = unread_count;
 
-            if (title_unchanged) return;
-
-            title_then = title_now;
+            if (!unread_messages) return;
 
             console.log("certiorem: { new: message }")
 
-            var sending = browser.runtime.sendMessage(title_now);
+            var sending = browser.runtime.sendMessage(unread_count);
 
             // sending.then(
             //     (response) => console.log("certiorem: { response: " + response + " }"),
